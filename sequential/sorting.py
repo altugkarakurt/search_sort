@@ -8,13 +8,20 @@ the head.
 --------------------------------------------------------------------"""
 def insertion_sort(lst):
     for i,li in enumerate(lst[1:]):
-        for j,lj in enumerate(lst[:i+1]):
-            if(li < lj):
-                lst[:i+2] = lst[:j] + [li,lj] + lst[j+1:i+1]
+        for j,lj in enumerate(lst[:i+1][::-1]):
+            if(lj < li):
+                lst[:i+2] = lst[:(i-j)] + [lj,li] + lst[i-j+1:i+1]
                 break
+        else: # li is the smallest entry we've found so far
+            lst[:i+2] = [li] + lst[:i+1]
     return lst
 
-    # TODO iterate from the end not the beginning in the inner loop
+"""--------------------------------------------------------------------
+Insertion sort with binary (instead of linear) search
+--------------------------------------------------------------------"""
+def binary_insertion_sort(lst):
+    pass
+
 
 """--------------------------------------------------------------------
 Generalizes insertion-sort by locally sorting sublists instead of
