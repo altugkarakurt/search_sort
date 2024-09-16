@@ -1,5 +1,7 @@
 from math import log2
 
+from .search import binary_search
+
 
 """--------------------------------------------------------------------
 We iterate from second item to the end, keeping the first i+1 terms
@@ -8,19 +10,26 @@ the head.
 --------------------------------------------------------------------"""
 def insertion_sort(lst):
     for i,li in enumerate(lst[1:]):
-        for j,lj in enumerate(lst[:i+1][::-1]):
-            if(lj < li):
-                lst[:i+2] = lst[:(i-j)] + [lj,li] + lst[i-j+1:i+1]
-                break
-        else: # li is the smallest entry we've found so far
+        if(li <= lst[0]): # li is the smallest entry we've found so far
             lst[:i+2] = [li] + lst[:i+1]
+        else:
+            for j,lj in enumerate(lst[:i+1][::-1]):
+                if(lj < li):
+                    lst[:i+2] = lst[:(i-j)] + [lj,li] + lst[i-j+1:i+1]
+                    break
     return lst
 
 """--------------------------------------------------------------------
 Insertion sort with binary (instead of linear) search
 --------------------------------------------------------------------"""
 def binary_insertion_sort(lst):
-    pass
+    for i,li in enumerate(lst[1:]):
+        if(li <= lst[0]): # li is the smallest entry we've found so far
+            lst[:i+2] = [li] + lst[:i+1]
+            continue
+        j = binary_search(li, lst[:i+1], _max_lt_idx=True)
+        lst[:i+2] = lst[:j+1] + [li] + lst[j+1:i+1]
+    return lst
 
 
 """--------------------------------------------------------------------
@@ -38,7 +47,7 @@ def shell_sort(lst):
     for gap in gaps:
         for i in range(gap):
             # lst[i::gap] = lst[i], lst[i+gap], lst[i+2*gap], ...
-            lst[i::gap] = insertion_sort(lst[i::gap])
+            lst[i::gap] = binary_insertion_sort(lst[i::gap])
     return lst
 
 """--------------------------------------------------------------------

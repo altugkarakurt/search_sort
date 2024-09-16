@@ -1,5 +1,5 @@
 """--------------------------------------------------------------------
-The recursive implementation of merge sort. The input list is recursively 
+The recursive implementation of merge sort. Input list is recursively 
 split into two until we divide the list into singletons. Then, the
 singleton sets are merged in a sorted way. 
 --------------------------------------------------------------------"""
