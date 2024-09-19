@@ -1,5 +1,6 @@
 from random import randint, random
 from timeit import default_timer as timer
+from inspect import getmodule
 
 
 """--------------------------------------------------------------------
@@ -22,10 +23,10 @@ def test_sort(sort_func, lst_len=10, lst_cnt=100):
         for lst in lsts:
             test_lst, sorted_lst = func(lst), sorted(lst)
             if(sorted_lst != test_lst):
-                print(f"{func.__name__} failed the test: Expected {sorted_lst}, got {test_lst}.")
+                print(f"{func.__module__}.{func.__name__} failed the test: Expected {sorted_lst}, got {test_lst}.")
                 break
         else:
-            print(f"{func.__name__} passed the test")
+            print(f"{func.__module__}.{func.__name__} passed the test")
 
 # Times sorting function(s)
 def time_sort(sort_func, lst_len=1000, lst_cnt=25):
@@ -40,7 +41,7 @@ def time_sort(sort_func, lst_len=1000, lst_cnt=25):
         end_time = timer()
         avg_time = (end_time-start_time)/lst_cnt
 
-        print(f"{func.__name__} sorts a {lst_len}-long list in {avg_time:.02g} seconds.")
+        print(f"{func.__module__}.{func.__name__} sorts a {lst_len}-long list in {avg_time:.02g} seconds.")
 
 """--------------------------------------------------------------------
     Utils for Searching (Sorted Lists)
@@ -66,11 +67,11 @@ def test_search(search_func, lst_len=50, lst_cnt=100, hit_prob=0.5):
             item_idx = func(item, lst)
             if(item_idx is None):
                 if(item in lst):
-                    print(f"{func.__name__} failed: Missed the item {item} in {lst}.")
+                    print(f"{func.__module__}.{func.__name__} failed: Missed the item {item} in {lst}.")
             elif(lst[item_idx] != item):
-                print(f"{func.__name__} failed: False positive at idx:{item_idx} for the item {item} in {lst}.")
+                print(f"{func.__module__}.{func.__name__} failed: False positive at idx:{item_idx} for the item {item} in {lst}.")
         else:
-            print(f"{func.__name__} passed the test")
+            print(f"{func.__module__}.{func.__name__} passed the test")
 
 
 def time_search(search_func, lst_len=10**6, lst_cnt=25, hit_prob=0.9):
@@ -85,4 +86,4 @@ def time_search(search_func, lst_len=10**6, lst_cnt=25, hit_prob=0.9):
         end_time = timer()
         avg_time = (end_time-start_time)/lst_cnt
 
-        print(f"{func.__name__} searched a {lst_len}-long list in {avg_time:.02g} seconds.")
+        print(f"{func.__module__}.{func.__name__} searched a {lst_len}-long list in {avg_time:.02g} seconds.")
