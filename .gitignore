@@ -155,5 +155,5 @@ dmypy.json
 cython_debug/
 
 # Cython generated C files
-cythonized/*.c
-cythonized/*.html
+cython_search_sort/*.c
+cython_search_sort/*.html
