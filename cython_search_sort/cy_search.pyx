@@ -4,7 +4,8 @@
 import cython
 
 
-def linear_search(item: cython.int, lst: cython.int[:]) -> cython.int:
+# cython.uchar = unsigned char = uint8_t in C.
+def cy_linear_search(item: cython.uchar, lst: cython.uchar[:]) -> cython.int:
     i: cython.int
     li: cython.int
     for i in range(lst.shape[0]):
@@ -12,7 +13,7 @@ def linear_search(item: cython.int, lst: cython.int[:]) -> cython.int:
             return i
     return -1
 
-def binary_search(item: cython.int, lst: cython.int[:]) -> cython.int:
+def cy_binary_search(item: cython.uchar, lst: cython.uchar[:]) -> cython.int:
     left_idx: cython.int = 0
     right_idx: cython.int = len(lst)-1
     mid_idx: cython.int = 0

@@ -1,6 +1,7 @@
-from random import randint, random
+from random import random
 from timeit import default_timer as timer
-from inspect import getmodule
+import numpy as np
+from numpy.random import randint
 
 
 """--------------------------------------------------------------------
@@ -8,8 +9,8 @@ from inspect import getmodule
 --------------------------------------------------------------------"""
 # Generates $lst_cnt many random lists of length $lst_len to sort
 def generate_sort_data(lst_len, lst_cnt, int_min=0, int_max=100):
-    return [[randint(int_min, int_max) for _ in range(lst_len) ]
-             for _ in range(lst_cnt)]
+    return randint(int_min, int_max, size=(lst_cnt, lst_len), dtype=np.uint8)
+
 
 # Tests a sorting function by comparing it against sorted(.) 
 # over random lists
@@ -21,7 +22,7 @@ def test_sort(sort_func, lst_len=10, lst_cnt=100):
         lsts = generate_sort_data(lst_len, lst_cnt)
         
         for lst in lsts:
-            test_lst, sorted_lst = func(lst), sorted(lst)
+            test_lst, sorted_lst = func(lst), np.sort(lst)
             if(sorted_lst != test_lst):
                 print(f"{func.__module__}.{func.__name__} failed the test: Expected {sorted_lst}, got {test_lst}.")
                 break
@@ -29,7 +30,7 @@ def test_sort(sort_func, lst_len=10, lst_cnt=100):
             print(f"{func.__module__}.{func.__name__} passed the test")
 
 # Times sorting function(s)
-def time_sort(sort_func, lst_len=1000, lst_cnt=25):
+def time_sort(sort_func, lst_len=1000, lst_cnt=5):
     if(callable(sort_func)):
         sort_func = [sort_func]
     
@@ -47,12 +48,11 @@ def time_sort(sort_func, lst_len=1000, lst_cnt=25):
     Utils for Searching (Sorted Lists)
 --------------------------------------------------------------------"""
 # Generates $lst_cnt many lists of size $lst_len to search through. With
-# $hit_prob probability, the item being searched is in the list.  
+# $hit_prob probability, the item being searched is in the list. We set miss
+# item as (int_max+1) since the value will not appear in the list
 def generate_search_data(lst_len, lst_cnt, hit_prob=0.9, int_min=0, int_max=100):
-    lsts = [sorted([randint(int_min, int_max) for _ in range(lst_len)])
-             for _ in range(lst_cnt)]
-    
-    items = [lst[randint(0, (lst_len-1))] if(random() < hit_prob) else -1 for lst in lsts]
+    lsts = np.sort(generate_sort_data(lst_len, lst_cnt, int_min=int_min, int_max=int_max))
+    items = [lst[randint(0, (lst_len-1))] if(random() < hit_prob) else (int_max+1) for lst in lsts]
 
     return items, lsts
 
@@ -65,7 +65,7 @@ def test_search(search_func, lst_len=50, lst_cnt=100, hit_prob=0.5):
 
         for item, lst in zip(items, lsts):
             item_idx = func(item, lst)
-            if(item_idx is None):
+            if(item_idx < 0):
                 if(item in lst):
                     print(f"{func.__module__}.{func.__name__} failed: Missed the item {item} in {lst}.")
             elif(lst[item_idx] != item):
@@ -73,8 +73,7 @@ def test_search(search_func, lst_len=50, lst_cnt=100, hit_prob=0.5):
         else:
             print(f"{func.__module__}.{func.__name__} passed the test")
 
-
-def time_search(search_func, lst_len=10**6, lst_cnt=25, hit_prob=0.9):
+def time_search(search_func, lst_len=10**6, lst_cnt=10, hit_prob=0.75):
     if(callable(search_func)):
         search_func = [search_func]
     

@@ -7,6 +7,6 @@ from Cython.Build import cythonize
 dev_mode = True
 
 setup(
-    name='cy_search',
-    ext_modules = cythonize("cythonized/cy_search.pyx", annotate=dev_mode),
+    name='cy_search_sort',
+    ext_modules = cythonize("cython_search_sort/cy_search.pyx", annotate=dev_mode),
 )

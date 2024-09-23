@@ -1,6 +1,6 @@
 from math import log2
 
-from .search import binary_search
+from .py_search import binary_search
 
 
 """--------------------------------------------------------------------
