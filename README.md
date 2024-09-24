@@ -1,10 +1,8 @@
 # Search & Sort Algorithms
 A repository of standard searching and sorting algorithms. Beyond a simple refresher of fundamental algorithms, this is meant to serve as a benchmarking for general purpose techniques for speeding up Python. Each algorithm is (to be) implemented in various versions:
-* `standard/` hosts the implementations with standard Python
-* `parallelized/` hosts the parallelized versions of the algorithms that lend themselves to multiprocessing
-* `jit/` hosts versions that are sped up using Just-In Time compilation
-* `cythonized/` hosts the cythonized (and parallelized if applicable) implementations of the algorithms
-
+* `python_search_sort/` hosts the standard Python implementations (with option to parallelize)
+* `cython_search_sort/` hosts the Cythonized implementations using type-declarations
+* `c_search_sort/` hosts the standard library C implementations
 ---
 
-For a quick test and high-level usage examples, see `utils.py`
+For a quick test and high-level usage examples, see `search_compare.py`
