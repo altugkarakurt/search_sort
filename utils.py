@@ -73,16 +73,28 @@ def test_search(search_func, lst_len=50, lst_cnt=100, hit_prob=0.5):
         else:
             print(f"{func.__module__}.{func.__name__} passed the test")
 
-def time_search(search_func, lst_len=10**6, lst_cnt=10, hit_prob=0.75):
+def time_search(search_func, lst_lens=10**6, lst_cnt=25, hit_prob=0.75, verbose=True):
     if(callable(search_func)):
         search_func = [search_func]
     
-    for func in search_func:
-        items, lsts = generate_search_data(lst_len, lst_cnt, hit_prob=0.9)
-        start_time = timer()
-        for item, lst in zip(items, lsts):
-            func(item, lst)
-        end_time = timer()
-        avg_time = (end_time-start_time)/lst_cnt
+    if not hasattr(lst_lens, '__iter__'):
+        lst_lens = [lst_lens]
+    
+    time_elapsed = {func.__name__:dict() for func in search_func}
 
-        print(f"{func.__module__}.{func.__name__} searched a {lst_len}-long list in {avg_time:.02g} seconds.")
+    for len_i, lst_len in enumerate(lst_lens):
+        if(verbose):
+            print(f"({len_i+1}/{len(lst_lens)})---------------------")
+        for func in search_func:
+            items, lsts = generate_search_data(lst_len, lst_cnt)
+            start_time = timer()
+            for item, lst in zip(items, lsts):
+                func(item, lst)
+            end_time = timer()
+            avg_time = (end_time-start_time)/lst_cnt
+
+            if(verbose):
+                print(f"{func.__module__}.{func.__name__} searched a {lst_len}-long list in {avg_time:.02g} seconds.")
+                time_elapsed[func.__name__][lst_len] = avg_time
+    return time_elapsed
+    
