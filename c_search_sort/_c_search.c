@@ -8,7 +8,7 @@
 */
 
 int linear_search(uint8_t item, uint8_t *lst, size_t lst_len) {
-    for(int i=0; i < lst_len; i++){
+    for(unsigned int i=0; i < lst_len; i++){
         if(lst[i] ==  item){
             return i;
         }
