@@ -2,7 +2,7 @@
 
 /* To generate a .so file:
 
-    gcc -c _c_search.c
+    gcc -c -O3 _c_search.c
     gcc _c_search.o -shared -o _c_search.so
 
 */
@@ -31,4 +31,16 @@ int binary_search(uint8_t item, uint8_t *lst, size_t lst_len) {
             return mid_idx;
     }
     return -1;
+}
+
+int _bsearch_cmp(const void* a, const void* b) {
+	return (*(uint8_t*)a - *(uint8_t*)b);
+}
+
+int builtin_binary_search(uint8_t item, uint8_t *lst, size_t lst_len) {
+    uint8_t *p1 = (uint8_t*)bsearch(&item, lst, lst_len, sizeof(uint8_t), _bsearch_cmp);
+
+    if(p1 == NULL)
+        return -1;
+    return p1-lst;
 }
