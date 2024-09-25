@@ -158,3 +158,6 @@ cython_debug/
 # Cython generated C files
 cython_search_sort/*.c
 cython_search_sort/*.html
+
+# Experimental Results
+results/
